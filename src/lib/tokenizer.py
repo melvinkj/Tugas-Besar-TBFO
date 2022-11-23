@@ -1,5 +1,6 @@
 import sys
 import re
+import fa
 import os
 
 # Token dari syntax ke token
@@ -94,7 +95,7 @@ tokenExprs = [
     (r'\"\"\"[(?!(\"\"\"))\w\W]*\"\"\"',       "MULTILINE"),
 
     # Variable 
-    (r'[A-Za-z_][A-Za-z0-9_]*', "ID"),
+    # (r'[A-Za-z_][A-Za-z0-9_]*', "ID"),
 ]
 
 # Melakukan tokenize pada text sesuai dengan token expression
@@ -123,8 +124,12 @@ def tokenize(text, tokenExprs):
                 break
 
         if not flag:
-            print(f"\nSyntax error\nTerdapat karakter tidak valid {text[currCol]} pada baris {currLine}")
-            sys.exit(1)
+            if (fa.isVariable(text[currCol])):
+                token = "ID"
+                tokens.append(token)
+            else:
+                print(f"\nSyntax error\nTerdapat karakter tidak valid {text[currCol]} pada baris {currLine}")
+                sys.exit(1)
         else:
             currCol = flag.end(0)
         currPos += 1
