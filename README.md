@@ -30,10 +30,6 @@ $ git clone https://github.com/melvinkj/Tugas-Besar-TBFO.git
 
 2. Put javascript file you want to validate to `test` folder
 
-```
-$ pip install -r requirements.txt
-```
-
 3. Run main.py with the argument below by changing <filename.js> into your file name
 
 ```
@@ -57,11 +53,11 @@ $ python main.py test/<filename.js>
     |       tokenizer.py
     └───test
         testfor.js
+        testfor2.js
         testfunc1.js
         testfunc2.js
         testobject.js
         testswitch1.js
-        testswitch2.js
         testtry1.js
         testtry2.js
         testwhile.js
