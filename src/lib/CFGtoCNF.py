@@ -58,6 +58,7 @@ def is_terminal(string):
         "ARROW",
         "QMARK",
         "VAR",
+        "ID",
         "CONST",
         "SWITCH",
         "CASE",
