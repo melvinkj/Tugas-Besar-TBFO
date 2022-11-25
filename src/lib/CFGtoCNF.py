@@ -86,6 +86,7 @@ def is_terminal(string):
         "ORLOG",
         "NULLISH",
         "INC_OP",
+        "DEC_OP"
         "DEC_OP",
         "DEFAULT"
     ]
@@ -178,7 +179,7 @@ def removeUnitProduction(CFG):
                 if len(rule_unit) == 1:
                     CFG[head_unit].remove(rule_unit)    
     return CFG
-    
+
 def CFG_to_CNF(file):
     CFG = convertFileToDictionary(file)
 
@@ -279,6 +280,6 @@ def CFG_to_CNF(file):
             else:
                 pass
 
-    CFG = compileProductionToCFG(final_newProductions, final_throwProductions, CFG)
+    CNF = compileProductionToCFG(final_newProductions, final_throwProductions, CFG)
 
-    return CFG
+    return CNF
