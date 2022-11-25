@@ -44,8 +44,7 @@ def main():
     # print('\n'.join(os.listdir(input_file)))
 
     token = createToken(input_file)
-    token = [x.lower() for x in token]
-    CNFgrammar = mapGrammar(convertGrammar((readGrammarFile("lib/grammar/cfg.txt"))))
+    CNFgrammar = mapGrammar(convertGrammar((readGrammarFile("./CFG.txt"))))
     cykParse(token, CNFgrammar)
 
 

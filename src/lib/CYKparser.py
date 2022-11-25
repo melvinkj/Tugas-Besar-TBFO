@@ -1,7 +1,8 @@
 # Function to perform the CYK Algorithm
 def cykParse(tokenText, CNFrules):
-    
-    n = len(tokenText)
+    token = tokenText.split(" ")
+    n = len(token)
+    print(token)
     
     # Initialize the table
     T = [[set([]) for j in range(n)] for i in range(n)]
@@ -12,12 +13,12 @@ def cykParse(tokenText, CNFrules):
         for lhs, rule in CNFrules.items():
             for rhs in rule:
                 # If a terminal is found
-                if len(rhs) == 1 and rhs[0] == tokenText[j]:
+                if len(rhs) == 1 and rhs[0] == token[j]:
                     T[j][j].add(lhs)
 
         for i in range(j, -1, -1):  
             # Iterate over the range i to j + 1  
-            for k in range(i, j + 1):    
+            for k in range(i, j):    
                 # Iterate over the rules
                 for lhs, rule in CNFrules.items():
                     for rhs in rule:  
@@ -25,6 +26,7 @@ def cykParse(tokenText, CNFrules):
                         if len(rhs) == 2 and rhs[0] in T[i][k] and rhs[1] in T[k + 1][j]:
                             T[i][j].add(lhs)
 
+    print(T[0][n-1])
     # If the token text is included in CNF rules, then the program is accepted
     if 'S' in (T[0][n-1]):
         print("Accepted")
