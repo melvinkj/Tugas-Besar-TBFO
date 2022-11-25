@@ -68,8 +68,25 @@ def is_terminal(string):
         "FINALLY",
         "THROW",
         "DELETE",
-
-
+        "ISEQEQ", 
+        "ANDAS",
+        "ORAS",
+        "LSHIFTAS",
+        "RSHIFTAS",
+        "URSHIFT",
+        "XORAS",
+        "ANDLOGAS",
+        "ORLOGAS",
+        "NULLISHAS",
+        "LSHIFT",
+        "RSHIFT",
+        "URSHIFT",
+        "XOR",
+        "ANDLOG",
+        "ORLOG",
+        "NULLISH",
+        "INC_OP",
+        "DEC_OP"
     ]
     
     return string in list_of_terminal
