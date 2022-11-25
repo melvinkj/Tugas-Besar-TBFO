@@ -165,8 +165,7 @@ def createToken(fileName):
 
     tokens = tokenize(text, tokenExprs)
     tokenResult = []
-    
-    print("ini lagi jalanin token")
+
 
     for token in tokens:
         tokenResult.append(token)

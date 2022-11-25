@@ -37,7 +37,7 @@ $ pip install -r requirements.txt
 3. Run main.py with the argument below by changing <filename.js> into your file name
 
 ```
-$ python main.py test/<filename.py>
+$ python main.py test/<filename.js>
 ```
 
 ## Program Structure

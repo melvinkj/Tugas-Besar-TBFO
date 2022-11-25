@@ -2,9 +2,9 @@ import argparse
 import os
 import sys
 import re
-from lib.tokenizer import createToken
-from lib.CFGtoCNF import CFG_to_CNF
-from lib.CYKparser import cykParse
+from src.tokenizer import createToken
+from src.CFGtoCNF import CFG_to_CNF
+from src.CYKparser import cykParse
 
 
 def splash_screen():
