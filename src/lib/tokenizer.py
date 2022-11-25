@@ -1,14 +1,13 @@
 import sys
 import re
-import fa
+from . import fa
 import os
 
 # Token dari syntax ke token
 tokenExprs = [
     (r'[ \t]+',                 None),
-    (r'[/*][^\n]*[*/]',                None),
-    (r'[\n]+[ \t]*\'\'\'[(?!(\'\'\'))\w\W]*\'\'\'',  None),
-    (r'[\n]+[ \t]*\"\"\"[(?!(\"\"\"))\w\W]*\"\"\"',  None),
+    (r'[//][^\n]',                None),
+    (r'[\n]+[ \t]*\/\*[(?!(\/\*))\w\W]*\*\\',  None),
 
     # Integer and String
     (r'\"[^\"\n]*\"',           "STRING"),
