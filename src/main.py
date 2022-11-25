@@ -3,7 +3,7 @@ import os
 import sys
 import re
 from lib.tokenizer import createToken
-from lib.CFGtoCNF import readGrammarFile, convertGrammar, mapGrammar
+from lib.CFGtoCNF import CFG_to_CNF
 from lib.CYKparser import cykParse
 
 def splash_screen():
@@ -44,7 +44,7 @@ def main():
     # print('\n'.join(os.listdir(input_file)))
 
     token = createToken(input_file)
-    CNFgrammar = mapGrammar(convertGrammar((readGrammarFile("./CFG.txt"))))
+    CNFgrammar = CFG_to_CNF("./CFG.txt")
     cykParse(token, CNFgrammar)
 
 
