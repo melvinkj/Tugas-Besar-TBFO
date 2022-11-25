@@ -2,7 +2,7 @@ import os
 
 def is_terminal(string):
     list_of_terminal = [
-        "EQ",
+       "EQ",
         "ISEQ",
         "KBKI",
         "KBKA",
@@ -32,6 +32,7 @@ def is_terminal(string):
         "OR",
         "NOT",
         "IF",
+        "THEN",
         "ELSE",
         "ELIF",
         "WHILE",
@@ -39,7 +40,6 @@ def is_terminal(string):
         "TRUE",
         "BREAK",
         "CONTINUE",
-        "DEFAULT",
         "FOR",
         "IN",
         "IS",
@@ -69,6 +69,25 @@ def is_terminal(string):
         "FINALLY",
         "THROW",
         "DELETE",
+        "ISEQEQ", 
+        "ANDAS",
+        "ORAS",
+        "LSHIFTAS",
+        "RSHIFTAS",
+        "URSHIFT",
+        "XORAS",
+        "ANDLOGAS",
+        "ORLOGAS",
+        "NULLISHAS",
+        "LSHIFT",
+        "RSHIFT",
+        "URSHIFT",
+        "XOR",
+        "ANDLOG",
+        "ORLOG",
+        "NULLISH",
+        "INC_OP",
+        "DEC_OP"
 
 
     ]
