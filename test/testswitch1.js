@@ -1,6 +1,6 @@
 let a = 1
 switch (a) {
-    default:
-        break
     case 1:
+        break
+    case 2:
 }
