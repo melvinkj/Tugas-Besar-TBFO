@@ -30,9 +30,9 @@ def main():
 
     input_file = args.File
 
-    if not os.path.isfile(input_file):
-        print("The file doesn't exist.")
-        sys.exit()
+    # if not os.path.isfile(input_file):
+    #     print("The file doesn't exist.")
+    #     sys.exit()
 
     splash_screen()
     print("Processing...")
@@ -42,7 +42,7 @@ def main():
 
     # print('\n'.join(os.listdir(input_file)))
 
-    token = createToken(input_file)
+    token = createToken(str(input_file))
     token = [x.lower() for x in token]
     CNFgrammar = mapGrammar(convertGrammar((readGrammarFile("lib/grammar/cfg.txt"))))
     cykParse(token, CNFgrammar)
