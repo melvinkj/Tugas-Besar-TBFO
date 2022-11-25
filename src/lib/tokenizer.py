@@ -6,7 +6,7 @@ import os
 # Token dari syntax ke token
 tokenExprs = [
     (r'[ \t]+',                 None),
-    (r'[//][^\n]',                None),
+    (r'\/\/[^\n]*',                None),
     (r'[\n]+[ \t]*\/\*[(?!(\/\*))\w\W]*\*\\',  None),
 
     # Integer and String
