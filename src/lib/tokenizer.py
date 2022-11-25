@@ -81,22 +81,20 @@ tokenExprs = [
     (r'\blet\b',                "LET"),
     (r'\bvar\b',                "VAR"),
     (r'\bconst\b',              "CONST"),
-    (r'\bif\b',                 "IF"),
-    (r'\bthen\b',               "THEN"),
-    (r'\belse\b',               "ELSE"),
     (r'\belse if\b',            "ELIF"),
+    (r'\bif\b',                 "IF"),
+    (r'\belse\b',               "ELSE"),
     (r'\bswitch\b',             "SWITCH"),
     (r'\bcase\b',               "CASE"),
     (r'\bfor\b',                "FOR"),
     (r'\bwhile\b',              "WHILE"),
     (r'\bbreak\b',              "BREAK"),
     (r'\bcontinue\b',           "CONTINUE"),
+    (r'\bdefault\b',            "DEFAULT"),
     (r'\bfalse\b',              "FALSE"),
     (r'\btrue\b',               "TRUE"),
     (r'\bnull\b',               "NULL"),
-    # CEKK ADA ATAU GAA
     (r'\bin\b',                 "IN"),
-    (r'\bis\b',                 "IS"),
     (r'\bfunction\b',           "FUNC_STR"),
     (r'\breturn\b',             "RETURN"),
     (r'\btry\b',                "TRY"),
@@ -140,10 +138,9 @@ def tokenize(text, tokenExprs):
                     token = tag
                     tokens.append(token)
                 break
-            
 
         if not isMatch:
-            isVar = fa.isVariable(text[currPos])
+            isVar = fa.isVariable(text[currCol])
             if (isVar):
                 pattern, tag = (r'[A-Za-z_][A-Za-z0-9_]*', "ID")
                 regex = re.compile(pattern)
