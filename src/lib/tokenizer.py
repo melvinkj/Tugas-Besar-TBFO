@@ -140,10 +140,9 @@ def tokenize(text, tokenExprs):
                     token = tag
                     tokens.append(token)
                 break
-            
 
         if not isMatch:
-            isVar = fa.isVariable(text[currPos])
+            isVar = fa.isVariable(text[currCol])
             if (isVar):
                 pattern, tag = (r'[A-Za-z_][A-Za-z0-9_]*', "ID")
                 regex = re.compile(pattern)
