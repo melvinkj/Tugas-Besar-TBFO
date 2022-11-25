@@ -87,9 +87,8 @@ def is_terminal(string):
         "ORLOG",
         "NULLISH",
         "INC_OP",
-        "DEC_OP"
-
-
+        "DEC_OP",
+        "DEFAULT"
     ]
     
     return string in list_of_terminal
