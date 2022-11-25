@@ -64,8 +64,8 @@ tokenExprs = [
     (r'>>>=',                     "URSHIFT"),
     (r'\^=',                     "XORAS"),
     (r'&&=',                     "ANDLOGAS"),
-    (r'\|\|',                     "ORLOGAS"),
-    (r'\?\?',                     "NULLISHAS"),
+    (r'\|\|=',                     "ORLOGAS"),
+    (r'\?\?=',                     "NULLISHAS"),
     (r'<<',                     "LSHIFT"),
     (r'>>(?!>)',                     "RSHIFT"),
     (r'>>>',                     "URSHIFT"),
@@ -142,7 +142,7 @@ def tokenize(text, tokenExprs):
         if not isMatch:
             isVar = fa.isVariable(text[currCol])
             if (isVar):
-                pattern, tag = (r'[A-Za-z_][A-Za-z0-9_]*', "ID")
+                pattern, tag = (r'[A-Za-z_$][A-Za-z0-9_$]*', "ID")
                 regex = re.compile(pattern)
                 isMatch = regex.match(text, currCol)
                 token = tag
