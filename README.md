@@ -56,12 +56,13 @@ $ python main.py test/<filename.js>
     |       fa.py
     |       tokenizer.py
     └───test
-        test01.js
-        test02.js
-        test03.js
-        test04.js
-        test05.js
-        test06.js
-        test07.js
-        test08.js
+        testfor.js
+        testfunc1.js
+        testfunc2.js
+        testobject.js
+        testswitch1.js
+        testswitch2.js
+        testtry1.js
+        testtry2.js
+        testwhile.js
 ```
