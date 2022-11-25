@@ -1,7 +1,7 @@
 import os
 
 def is_terminal(string):
-    list_of_terminal = [
+    terminal_list = [
        "EQ",
         "ISEQ",
         "KBKI",
@@ -42,7 +42,6 @@ def is_terminal(string):
         "CONTINUE",
         "FOR",
         "IN",
-        "IS",
         "RETURN",
         "COMMA",
         "KARTITIK",
@@ -91,7 +90,7 @@ def is_terminal(string):
         "DEFAULT"
     ]
     
-    return string in list_of_terminal
+    return string in terminal_list
 
 def is_variables(string):
     return not is_terminal(string)
@@ -115,9 +114,6 @@ def convertFileToDictionary(file):
     file.close()
     return CFG
 
-def removeUnitProductions():
-    return 0
-
 def addingProduction(newProductions, delProductions, CFG):
     for new_head, new_body in newProductions.items():
         if new_head not in CFG.keys():
@@ -130,40 +126,36 @@ def addingProduction(newProductions, delProductions, CFG):
             CFG[del_head].remove(del_rule)
     
     return CFG
-    
-def CFG_to_CNF(file):
-    CFG = convertFileToDictionary(file)
 
-    # STEP 1: If the start symbol S occurs on some right side, create a new start symbol S' and a new production S' -> S.
+def startProduction(CFG):
     list_head = list(CFG.keys())
     list_body = list(CFG.values())
-    start_symbol = list_head[0]
-    add_new_rule = False
+    start = list_head[0]
+    add_new = False
 
     for rules in list_body:
         for rule in rules:
-            if start_symbol in rule:
-                add_new_rule = True
+            if start in rule:
+                add_new = True
                 break
-        if add_new_rule:
+        if add_new:
             break
 
-    if add_new_rule:
-        new_rule = {"START" : [[start_symbol]]}
+    if add_new:
+        new_rule = {"START" : [[start]]}
         new_rule.update(CFG)
         CFG = new_rule
+    return CFG
 
-    # STEP 2: Remove unit productions.
-    contain_unit = True
-
-    while contain_unit:
+def removeUnitProduction(CFG):
+    contain = True
+    while (contain):
         unit_productions = {}
-        contain_unit = False
-        
+        contain = False
         for head, body in CFG.items():
             for rule in body:
                 if len(rule) == 1 and is_variables(rule[0]):
-                    contain_unit = True
+                    contain = True
                     if head not in unit_productions.keys():
                         unit_productions[head] = [[rule[0]]]
                     else:
@@ -184,12 +176,20 @@ def CFG_to_CNF(file):
         for head_unit, body_unit in unit_productions.items():
             for rule_unit in body_unit:
                 if len(rule_unit) == 1:
-                    CFG[head_unit].remove(rule_unit)
+                    CFG[head_unit].remove(rule_unit)    
+    return CFG
+def CFG_to_CNF(file):
+    CFG = convertFileToDictionary(file)
 
-    # STEP 3: Replace Body with 3 or more Variables
-    new_productions = {}
-    del_productions = {}
+    # Langkah Pertama: jika ada Start Symbol 'S' di bagian kanan panah, maka menambahkan production symbol baru yaitu S'
+    CFG = startProduction(CFG)
 
+    # Kedua: Remove unit productions pada grammar.
+    CFG = removeUnitProduction(CFG)
+
+    # Ketiga: Replace Body dengan 3 atau lebih variables
+    first_newProductions = {}
+    first_throwProductions = {}
     i = 0
     for head, body in CFG.items():
         for rule in body:
@@ -198,30 +198,29 @@ def CFG_to_CNF(file):
             if len(temp_rule) > 2:
                 while len(temp_rule) > 2:
                     new_symbol = f"X{i}"
-                    if head_symbol not in new_productions.keys():
-                        new_productions[head_symbol] = [[temp_rule[0], new_symbol]]
+                    if head_symbol not in first_newProductions.keys():
+                        first_newProductions[head_symbol] = [[temp_rule[0], new_symbol]]
                     else:
-                        new_productions[head_symbol].append([temp_rule[0], new_symbol])
+                        first_newProductions[head_symbol].append([temp_rule[0], new_symbol])
                     head_symbol = new_symbol
                     temp_rule.remove(temp_rule[0])
                     i += 1
                 else:
-                    if head_symbol not in new_productions.keys():
-                        new_productions[head_symbol] = [temp_rule]
+                    if head_symbol not in first_newProductions.keys():
+                        first_newProductions[head_symbol] = [temp_rule]
                     else:
-                        new_productions[head_symbol].append(temp_rule)
+                        first_newProductions[head_symbol].append(temp_rule)
                     
-                    if head not in del_productions.keys():
-                        del_productions[head] = [rule]
+                    if head not in first_throwProductions.keys():
+                        first_throwProductions[head] = [rule]
                     else:
-                        del_productions[head].append(rule)
+                        first_throwProductions[head].append(rule)
 
-    CFG = addingProduction(new_productions, del_productions, CFG)
+    CFG = addingProduction(first_newProductions, first_throwProductions, CFG)
     
-    # STEP 4: Replace Terminal adjacent to a Variables
-    new_productions = {}
-    del_productions = {}
-
+    #Keempat: ganti Terminal berdekatan menjadi Variables
+    final_newProductions = {}
+    final_throwProductions = {}
     j = 0
     k = 0
     for head, body in CFG.items():
@@ -230,59 +229,55 @@ def CFG_to_CNF(file):
                 new_symbol_Y = f"Y{j}"
                 new_symbol_Z = f"Z{k}"
 
-                if head not in new_productions.keys():
-                    new_productions[head] = [[new_symbol_Y, new_symbol_Z]]
+                if head not in final_newProductions.keys():
+                    final_newProductions[head] = [[new_symbol_Y, new_symbol_Z]]
                 else:
-                    new_productions[head].append([new_symbol_Y, new_symbol_Z])
+                    final_newProductions[head].append([new_symbol_Y, new_symbol_Z])
                     
-                new_productions[new_symbol_Y] = [[rule[0]]]
-                new_productions[new_symbol_Z] = [[rule[1]]]
+                final_newProductions[new_symbol_Y] = [[rule[0]]]
+                final_newProductions[new_symbol_Z] = [[rule[1]]]
 
-                if head not in del_productions.keys():
-                    del_productions[head] = [rule]
+                if head not in final_throwProductions.keys():
+                    final_throwProductions[head] = [rule]
                 else:
-                    del_productions[head].append(rule)
-
+                    final_throwProductions[head].append(rule)
                 j += 1
                 k += 1
 
             elif len(rule) == 2 and is_terminal(rule[0]):
                 new_symbol_Y = f"Y{j}"
 
-                if head not in new_productions.keys():
-                    new_productions[head] = [[new_symbol_Y, rule[1]]]
+                if head not in final_newProductions.keys():
+                    final_newProductions[head] = [[new_symbol_Y, rule[1]]]
                 else:
-                    new_productions[head].append([new_symbol_Y, rule[1]])
+                    final_newProductions[head].append([new_symbol_Y, rule[1]])
 
-                new_productions[new_symbol_Y] = [[rule[0]]]
+                final_newProductions[new_symbol_Y] = [[rule[0]]]
 
-                if head not in del_productions.keys():
-                    del_productions[head] = [rule]
+                if head not in final_throwProductions.keys():
+                    final_throwProductions[head] = [rule]
                 else:
-                    del_productions[head].append(rule)
-
+                    final_throwProductions[head].append(rule)
                 j += 1
 
             elif len(rule) == 2 and is_terminal(rule[1]):
                 new_symbol_Z = f"Z{k}"
 
-                if head not in new_productions.keys():
-                    new_productions[head] = [[rule[0], new_symbol_Z]]
+                if head not in final_newProductions.keys():
+                    final_newProductions[head] = [[rule[0], new_symbol_Z]]
                 else:
-                    new_productions[head].append([rule[0], new_symbol_Z])
+                    final_newProductions[head].append([rule[0], new_symbol_Z])
 
-                new_productions[new_symbol_Z] = [[rule[1]]]
+                final_newProductions[new_symbol_Z] = [[rule[1]]]
 
-                if head not in del_productions.keys():
-                    del_productions[head] = [rule]
+                if head not in final_throwProductions.keys():
+                    final_throwProductions[head] = [rule]
                 else:
-                    del_productions[head].append(rule)
-
+                    final_throwProductions[head].append(rule)
                 k += 1
-
             else:
                 pass
 
-    CFG = addingProduction(new_productions, del_productions, CFG)
+    CFG = addingProduction(final_newProductions, final_throwProductions, CFG)
 
     return CFG
