@@ -28,10 +28,12 @@ def isVariable(s):
         if (i == 0):
             if (not isAlphabet(s[i])) :
                 variable = False
+                print("Nama variabel \033[91m{}\033[0m salah".format(s) )
         elif (isAlphabet(s[i]) or isNumber(s[i])) :
             continue
         else :
             variable = False
+            print("Nama variabel \033[91m{}\033[0m salah".format(s) )
         i += 1
 
     return variable

@@ -29,6 +29,6 @@ def cykParse(tokenText, CNFrules):
     print(T[0][n-1])
     # If the token text is included in CNF rules, then the program is accepted
     if 'S' in (T[0][n-1]):
-        print("Accepted")
+        print("\033[92mAccepted\033[0m")
     else:
-        print("Syntax Error")
+        print("\033[91mSyntax Error\033[0m")

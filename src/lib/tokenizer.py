@@ -149,7 +149,7 @@ def tokenize(text, tokenExprs):
                 tokens.append(token)
                 currCol = isMatch.end(0)
             else:
-                print(f"\nSyntax error\nTerdapat karakter tidak valid {text[currCol]} pada baris {currLine}")
+                print(f"\n\033[91mSyntax error\033[0m\nTerdapat karakter tidak valid \033[91m{text[currCol]}\033[0m pada baris {currLine}")
                 sys.exit(1)
         else:
             currCol = isMatch.end(0)
