@@ -5,7 +5,6 @@ import re
 from lib.tokenizer import createToken
 from lib.CFGtoCNF import CFG_to_CNF
 from lib.CYKparser import cykParse
-from termcolor import colored
 
 
 def splash_screen():
