@@ -115,7 +115,7 @@ def convertFileToDictionary(file):
     file.close()
     return CFG
 
-def addingProduction(newProductions, delProductions, CFG):
+def compileProductionToCFG(newProductions, delProductions, CFG):
     for new_head, new_body in newProductions.items():
         if new_head not in CFG.keys():
             CFG[new_head] = new_body
@@ -179,6 +179,7 @@ def removeUnitProduction(CFG):
                 if len(rule_unit) == 1:
                     CFG[head_unit].remove(rule_unit)    
     return CFG
+    
 def CFG_to_CNF(file):
     CFG = convertFileToDictionary(file)
 
@@ -217,7 +218,7 @@ def CFG_to_CNF(file):
                     else:
                         first_throwProductions[head].append(rule)
 
-    CFG = addingProduction(first_newProductions, first_throwProductions, CFG)
+    CFG = compileProductionToCFG(first_newProductions, first_throwProductions, CFG)
     
     #Keempat: ganti Terminal berdekatan menjadi Variables
     final_newProductions = {}
@@ -279,6 +280,6 @@ def CFG_to_CNF(file):
             else:
                 pass
 
-    CFG = addingProduction(final_newProductions, final_throwProductions, CFG)
+    CFG = compileProductionToCFG(final_newProductions, final_throwProductions, CFG)
 
     return CFG
