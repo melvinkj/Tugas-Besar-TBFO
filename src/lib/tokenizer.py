@@ -101,7 +101,7 @@ tokenExprs = [
 def tokenize(text, tokenExprs):
     # Current column, position, and line
     currCol = 0         
-    currPos = 1         
+    currPos = 0         
     currLine = 1
 
     # Token result
@@ -110,27 +110,35 @@ def tokenize(text, tokenExprs):
     while (currCol < len(text)):
         if (text[currCol] == "\n"):
             currLine += 1
-            currPos += 1
+            currPos = 1
 
-        flag = None
+        isMatch = None
+
         for tokenExpr in tokenExprs:
             pattern, tag = tokenExpr
-            flag = re.compile(pattern).match(text, currCol)
-            if flag:
+            regex = re.compile(pattern)
+            isMatch = regex.match(text, currCol)
+            if isMatch:
                 if tag:
                     token = tag
                     tokens.append(token)
                 break
+            
 
-        if not flag:
-            if (fa.isVariable(text[currCol])):
-                token = "ID"
+        if not isMatch:
+            isVar = fa.isVariable(text[currPos])
+            if (isVar):
+                pattern, tag = (r'[A-Za-z_][A-Za-z0-9_]*', "ID")
+                regex = re.compile(pattern)
+                isMatch = regex.match(text, currCol)
+                token = tag
                 tokens.append(token)
+                currCol = isMatch.end(0)
             else:
                 print(f"\nSyntax error\nTerdapat karakter tidak valid {text[currCol]} pada baris {currLine}")
                 sys.exit(1)
         else:
-            currCol = flag.end(0)
+            currCol = isMatch.end(0)
         currPos += 1
 
     return tokens
@@ -139,9 +147,12 @@ def createToken(fileName):
     # Open and read file
     file = open(fileName, encoding="utf8")
     text = file.read()
+    file.close()
+
     tokens = tokenize(text, tokenExprs)
     tokenResult = []
-    file.close()
+    
+    print("ini lagi jalanin token")
 
     for token in tokens:
         tokenResult.append(token)
@@ -154,7 +165,7 @@ def createToken(fileName):
     #     # print(token)
     # fileWrite.close()
 
-    return tokenResult
+    return " ".join(tokenResult)
 
 # if __name__ == "__main__": 
 #     path = os.getcwd()
