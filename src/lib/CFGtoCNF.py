@@ -1,8 +1,9 @@
 import keyword
 import os
+
 terminal = keyword.kwlist
-ruleDict = {}
-#Read txt
+dictRule = {}
+#Read CFG txt
 def readGrammarFile(file):
     dir =os.path.join(os.path.dirname(os.path.realpath(__file__)),  file)
     with open(dir) as cfg_file:
@@ -13,26 +14,15 @@ def readGrammarFile(file):
             rowConverted.append(splitRow)
     return rowConverted
 
-#Print read files
-def printGrammar(grammar):
-    for grammarRule in grammar:
-        for i in range(len(grammarRule)):
-            if i == 0:
-                print(grammarRule[i], " -> ", end='')
-            else:
-                print(grammarRule[i], end=' ')
-        print("\n")
-
-#Adding rule to global var
+# Adding rule to global var
 def addGrammarRule(rule):
-    global ruleDict
-  
-    if rule[0] not in ruleDict:
-        ruleDict[rule[0]] = []
-    ruleDict[rule[0]].append(rule[1:])
+    global dictRule
+    if rule[0] not in dictRule:
+        dictRule[rule[0]] = []
+    dictRule[rule[0]].append(rule[1:])
 
 def convertGrammar(grammar):
-    global ruleDict
+    global dictRule
     idx = 0
     unitProductions, res = [], []
     for rule in grammar:
@@ -57,8 +47,8 @@ def convertGrammar(grammar):
     # Proses cuma yang ada 1 non terminal di kanan
     while unitProductions:
         rule = unitProductions.pop() 
-        if rule[1] in ruleDict:
-            for item in ruleDict[rule[1]]:
+        if rule[1] in dictRule:
+            for item in dictRule[rule[1]]:
                 new_rule = [rule[0]] + item
           # nonterminal dikanan bakal dirubah either kalo panjangnya 3 / ada terminal
             if len(new_rule) > 2 or new_rule[1][0].islower():
@@ -70,20 +60,20 @@ def convertGrammar(grammar):
     return res
 
 def mapGrammar(grammar):
-    lenGrammar = len(grammar)
-    mp = {}
+    map = {}
     for rule in grammar :
-        mp[str(rule[0])] = []
+        map[str(rule[0])] = []
     for rule in grammar :
         elm = []
         for idxRule in range(1, len(rule)) :
             apd = rule[idxRule]
             elm.append(apd)
-        mp[str(rule[0])].append(elm)
-    return mp
+        map[str(rule[0])].append(elm)
+    return map
 
 def writeGrammar(grammar):
-    file = open('cnf.txt', 'w')
+    dir =os.path.join(os.path.dirname(os.path.realpath(__file__)),  'CNF.txt')
+    file = open(dir, 'w')
     for rule in grammar:
         file.write(rule[0])
         file.write(" -> ")
@@ -93,5 +83,16 @@ def writeGrammar(grammar):
         file.write("\n")
     file.close()
 
+#Print hasil files untuk debugging
+def printGrammar(grammar):
+    for grammarRule in grammar:
+        for i in range(len(grammarRule)):
+            if i != 0: 
+                print(grammarRule[i], end=' ')
+            else: # print panah jika merupakan terminal awal
+                print(grammarRule[i], " -> ", end='')        
+        print("\n")
+
 if __name__ == "__main__":
-  writeGrammar(convertGrammar((readGrammarFile("CFG.txt")))) 
+    writeGrammar(convertGrammar((readGrammarFile("CFG.txt")))) 
+    # printGrammar(readGrammarFile("CFG.txt"))
